@@ -1,0 +1,25 @@
+base_config: ../tts/fs2_adv.yaml
+task_cls: tasks.vc.vc_ppg.VCPPGTask
+binarization_args:
+  with_align: false
+  with_spk_embed: false
+normalize_pitch: true
+ref_enc_out: 256
+use_spk_id: false
+# asr
+asr_content_encoder: true
+asr_enc_type: conformer
+asr_enc_layers: 2
+asr_upsample_norm: bn
+asr_dec_layers: 2
+mel_strides: [ 2, 1, 1 ]
+asr_last_norm: false
+# energy
+use_energy: true
+# ref_attn
+ref_attn: false
+
+# eval and test
+num_valid_plots: 10
+num_sanity_val_steps: 10
+valid_mel_timbre_id: 100

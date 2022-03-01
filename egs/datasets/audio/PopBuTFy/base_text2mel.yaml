@@ -1,0 +1,30 @@
+base_config:
+  - egs/egs_bases/tts/base_zh.yaml
+  - egs/egs_bases/singing/base.yaml
+raw_data_dir: 'data/raw/popbutfy_short_male_0.75'
+processed_data_dir: 'data/processed/popbutfy_0.75'
+binary_data_dir: 'data/binary/popbutfy_0.75'
+
+# binarization parameters
+num_spk: 100
+binarization_args:
+  with_spk_id: true
+  reset_phone_dict: true
+  reset_word_dict: true
+  with_spk_embed: false
+  with_wav: false
+  with_linear: false
+  with_f0cwt: false
+word_size: 1000
+
+use_spk_embed: false
+use_spk_id: false
+use_ref_enc: false
+use_tech: true
+num_techs: 3
+
+normalize_pitch: false
+
+# vocoder parameters
+vocoder: pwg
+vocoder_ckpt: ''

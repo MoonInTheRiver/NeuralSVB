@@ -1,0 +1,5 @@
+base_config: ./base.yaml
+pre_align_args:
+  txt_processor: zh
+binarizer_cls: data_gen.tts.binarizer_zh.ZhBinarizer
+word_size: 3000
