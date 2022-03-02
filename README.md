@@ -10,14 +10,15 @@ ACL 2022 Main conference
 [![GitHub Stars](https://img.shields.io/github/stars/MoonInTheRiver/NeuralSVB)](https://github.com/MoonInTheRiver/NeuralSVB)
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=moonintheriver/NeuralSVB)
 
-<a href="https://neuralsvb.github.io" target="_blank">Project&nbsp;Page</a>
+<div align="center">
+    <a href="https://neuralsvb.github.io" target="_blank">Project&nbsp;Page</a>
+</div>
 
 <p align="center">:construction: :pick: :hammer_and_wrench: :construction_worker:</p>
 
-This repository is the official PyTorch implementation of our ACL-2022 [paper](https://arxiv.org/abs/2202.13277). Now, we release the codes for `SADTW` algorithm in our paper. Full version of our codes and data will be released at ACL-2022 conference (before June. 2022). Please star us and stay tuned!
-
+This repository is the official PyTorch implementation of our ACL-2022 [paper](https://arxiv.org/abs/2202.13277). Now, we release the codes for `SADTW` algorithm in our paper. The current expected release time of the full version codes and data is at the ACL-2022 conference (before June. 2022). Please star us and stay tuned!
+  
 ```
-.
 |--modules
     |--voice_conversion
         |--dtw
@@ -42,8 +43,14 @@ We are interested in a novel task, singing voice beautifying (SVB). Given the si
 <img align="center" src="resources/model_all7.png" style="  display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 100%;" />
+  width: 100%;" /> 
 <img align="center" src="resources/melhhh2.png" style="  display: block;
   margin-left: auto;
   margin-right: auto;
   width: 100%;" />
+
+## Issues
+ - Before raising a issue, please check our Readme and other issues for possible solutions.
+ - We will try to handle your problem in time but we could not guarantee a satisfying solution.
+ - Please be friendly.
+
