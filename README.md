@@ -44,6 +44,23 @@ This repository is the official PyTorch implementation of our ACL-2022 [paper](h
 NeuralSVB does not need text as input, but the ASR model to extract PPG needs text. Thus we also provide the [text labels](https://github.com/MoonInTheRiver/NeuralSVB/releases/download/pre-release/text_labels.zip) of PopBuTFy. 
 <!-- We recommend mixing [LibriTTS](https://www.openslr.org/60/) with PopBuTFy to train the ASR model. -->
 
+## Citation
+If this repository helps your research, please cite:
+
+    @inproceedings{liu-etal-2022-learning-beauty,
+    title = "Learning the Beauty in Songs: Neural Singing Voice Beautifier",
+    author = "Liu, Jinglin  and
+      Li, Chengxi  and
+      Ren, Yi  and
+      Zhu, Zhiying  and
+      Zhao, Zhou",
+    booktitle = "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.acl-long.549",
+    pages = "7970--7983",}
 
 ## Abstract
 
