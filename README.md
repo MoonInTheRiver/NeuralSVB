@@ -16,7 +16,7 @@ ACL 2022 Main conference
 
 <p align="center">:construction: :pick: :hammer_and_wrench: :construction_worker:</p>
 
-This repository is the official PyTorch implementation of our ACL-2022 [paper](https://arxiv.org/abs/2202.13277). Now, we release the codes for `SADTW` algorithm in our paper. The current expected release time of the full version codes and data is at the ACL-2022 conference (before June. 2022). Please star us and stay tuned!
+This repository is the official PyTorch implementation of our ACL-2022 [paper](https://arxiv.org/abs/2202.13277). Now, we release the codes for `SADTW` algorithm and dataset (PopBuTFy) in our paper. Please wait for other codes and pre-trained models. 
   
 ```
 |--modules
@@ -34,6 +34,15 @@ This repository is the official PyTorch implementation of our ACL-2022 [paper](h
  - Dec.01, 2021: Our recent work `DiffSinger` was accepted by AAAI-2022. [![](https://img.shields.io/github/stars/MoonInTheRiver/DiffSinger)](https://github.com/MoonInTheRiver/DiffSinger) [![downloads](https://img.shields.io/github/downloads/MoonInTheRiver/DiffSinger/total.svg)](https://github.com/MoonInTheRiver/DiffSinger/releases) \| [![](https://img.shields.io/github/stars/NATSpeech/NATSpeech)](https://github.com/NATSpeech/NATSpeech).
  - Sep.29, 2021: Our recent work `PortaSpeech` was accepted by NeurIPS-2021. [![](https://img.shields.io/github/stars/NATSpeech/NATSpeech)](https://github.com/NATSpeech/NATSpeech). 
  - May.06, 2021: We submitted DiffSinger to Arxiv [![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/2105.02446).
+
+## Dataset (PopBuTFy) Acquirement
+### Audio samples
+- See in [apply_form](resources/apply_form.md).
+- Dataset [preview](https://github.com/MoonInTheRiver/NeuralSVB/releases/download/pre-release/PopBuTFy-preview.zip).
+
+### Text labels
+NeuralSVB does not need text as input, but the ASR model to extract PPG needs text. Thus we also provide the [text labels](https://github.com/MoonInTheRiver/NeuralSVB/releases/download/pre-release/text_labels.zip) of PopBuTFy. 
+<!-- We recommend mixing [LibriTTS](https://www.openslr.org/60/) with PopBuTFy to train the ASR model. -->
 
 
 ## Abstract
