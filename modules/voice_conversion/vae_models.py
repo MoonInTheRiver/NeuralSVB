@@ -1,5 +1,5 @@
 from modules.commons.common_layers import *
-from modules.fastspeech.fs2_vae import FVAE, FVAEEncoder, FVAEDecoder
+from modules.fastspeech.fs2_vae import FVAE, FVAEEncoder, FVAEDecoder, WN
 import torch.distributions as dist
 import numpy as np
 from utils.hparams import hparams
