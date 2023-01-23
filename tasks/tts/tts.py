@@ -27,6 +27,14 @@ import utils
 
 class TtsTask(BaseTask):
     def __init__(self, *args, **kwargs):
+        self.max_tokens = hparams['max_tokens']
+        self.max_sentences = hparams['max_sentences']
+        self.max_valid_tokens = hparams['max_valid_tokens']
+        if self.max_valid_tokens == -1:
+            hparams['max_valid_tokens'] = self.max_valid_tokens = self.max_tokens
+        self.max_valid_sentences = hparams['max_valid_sentences']
+        if self.max_valid_sentences == -1:
+            hparams['max_valid_sentences'] = self.max_valid_sentences = self.max_sentences
         self.vocoder = None
         self.phone_encoder = self.build_phone_encoder(hparams['binary_data_dir'])
         self.padding_idx = self.phone_encoder.pad()
@@ -35,6 +43,7 @@ class TtsTask(BaseTask):
         self.saving_result_pool = None
         self.saving_results_futures = None
         self.stats = {}
+
         super().__init__(*args, **kwargs)
 
     def build_scheduler(self, optimizer):

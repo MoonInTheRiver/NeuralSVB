@@ -55,7 +55,7 @@ class FastSingingF0AlignDataset(FastSingingDataset):
         return batch
 
 
-class SVCParaTask(FastSpeech2AdvTask):
+class SVBParaTask(FastSpeech2AdvTask):
     def __init__(self):
         super().__init__()
         self.dataset_cls = FastSingingF0AlignDataset
@@ -374,7 +374,7 @@ class SVCParaTask(FastSpeech2AdvTask):
             losses['asr_p'] = F.cross_entropy(txt_tokens_p.transpose(1, 2), txt_tokens, ignore_index=0)
 
 
-class ParaPPGConstraintTask(SVCParaTask):
+class ParaPPGConstraintTask(SVBParaTask):
     def build_tts_model(self):
         data_dir = hparams['binary_data_dir']
         phone_list_file = os.path.join(data_dir, 'phone_set.json')
@@ -412,7 +412,7 @@ class ParaPPGConstraintTask(SVCParaTask):
                                                                                       hparams['hidden_size'])) * 0.1
 
 
-class ParaPPGPreExpTask(SVCParaTask):
+class ParaPPGPreExpTask(SVBParaTask):
     def build_tts_model(self):
         data_dir = hparams['binary_data_dir']
         phone_list_file = os.path.join(data_dir, 'phone_set.json')
@@ -426,7 +426,7 @@ class ParaPPGPreExpTask(SVCParaTask):
         losses['asr_a'] = F.cross_entropy(txt_tokens_a.transpose(1, 2), txt_tokens, ignore_index=0)
 
 
-class ParaAlignedPPGTask(SVCParaTask):
+class ParaAlignedPPGTask(SVBParaTask):
     def build_tts_model(self):
         data_dir = hparams['binary_data_dir']
         phone_list_file = os.path.join(data_dir, 'phone_set.json')
@@ -434,7 +434,7 @@ class ParaAlignedPPGTask(SVCParaTask):
         self.model = ParaAlignedPPG(len(phone_list) + 10)
 
 
-class ParaPPGPretrainedTask(SVCParaTask):
+class ParaPPGPretrainedTask(SVBParaTask):
     def build_model(self):
         self.build_tts_model()
         utils.load_ckpt(self.model.vc_asr, hparams['pretrain_asr_ckpt'], model_name='model')

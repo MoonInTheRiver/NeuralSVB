@@ -54,13 +54,13 @@ class FastSpeech2Task(TtsTask):
     @data_loader
     def val_dataloader(self):
         valid_dataset = self.dataset_cls(hparams['valid_set_name'], shuffle=False)
-        return self.build_dataloader(valid_dataset, False, self.max_eval_tokens, self.max_eval_sentences)
+        return self.build_dataloader(valid_dataset, False, self.max_valid_tokens, self.max_valid_sentences)
 
     @data_loader
     def test_dataloader(self):
         test_dataset = self.dataset_cls(hparams['test_set_name'], shuffle=False)
-        return self.build_dataloader(test_dataset, False, self.max_eval_tokens,
-                                     self.max_eval_sentences, batch_by_size=False)
+        return self.build_dataloader(test_dataset, False, self.max_valid_tokens,
+                                     self.max_valid_sentences, batch_by_size=False)
 
     def build_tts_model(self):
         self.model = FastSpeech2(self.phone_encoder)
