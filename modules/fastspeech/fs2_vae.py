@@ -3,7 +3,7 @@ import torch
 import torch.distributions as dist
 from torch import nn
 from modules.fastspeech.fs2 import FastSpeech2
-from modules.fastspeech.wavenet_decoder import WN
+from modules.voice_conversion.vae_models import WN
 from modules.glow.glow_tts_modules import ResidualCouplingBlock
 from utils.hparams import hparams
 
