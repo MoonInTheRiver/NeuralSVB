@@ -58,7 +58,7 @@ class VCASR(nn.Module):
         super().__init__()
         self.asr_enc_layers = hparams['asr_enc_layers']
         self.asr_dec_layers = hparams['asr_dec_layers']
-        self.hidden_size = hparams['asr_hidden_size']
+        self.hidden_size = hparams['hidden_size']
         self.num_heads = 2
         self.mel_prenet = Prenet(n_mel_bins, self.hidden_size, strides=hparams['mel_strides'])
         if hparams['asr_enc_type'] == 'conv':
