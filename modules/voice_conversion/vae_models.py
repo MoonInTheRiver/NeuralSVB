@@ -2,7 +2,7 @@ from modules.commons.common_layers import *
 from modules.fastspeech.fs2_vae import FVAE, FVAEEncoder, FVAEDecoder
 import torch.distributions as dist
 import numpy as np
-from modules.glow.glow_modules import WN
+from modules.fastspeech.wavenet_decoder import WN
 from utils.hparams import hparams
 
 

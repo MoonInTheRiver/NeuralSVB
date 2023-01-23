@@ -5,6 +5,7 @@ from torch.nn import Parameter
 import torch.onnx.operators
 import torch.nn.functional as F
 import utils
+from modules.fastspeech.pe import ConvBlock
 
 
 class Reshape(nn.Module):
