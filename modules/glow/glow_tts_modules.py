@@ -5,6 +5,16 @@ from modules.fastspeech.wavenet_decoder import WN
 from modules.fastspeech.tts_modules import LayerNorm
 
 
+class Flip(nn.Module):
+    def forward(self, x, *args, reverse=False, **kwargs):
+        x = torch.flip(x, [1])
+        logdet = torch.zeros(x.size(0)).to(dtype=x.dtype, device=x.device)
+        return x, logdet
+
+    def store_inverse(self):
+        pass
+
+
 class LambdaLayer(nn.Module):
     def __init__(self, lambd):
         super(LambdaLayer, self).__init__()

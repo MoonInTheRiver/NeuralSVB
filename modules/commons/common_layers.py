@@ -5,7 +5,6 @@ from torch.nn import Parameter
 import torch.onnx.operators
 import torch.nn.functional as F
 import utils
-from modules.fastspeech.pe import ConvBlock
 
 
 class Reshape(nn.Module):
@@ -733,4 +732,79 @@ class ConvGlobalStacks(nn.Module):
             x = f(x)  # (B, C, T)
         x = x.transpose(1, -1)
         x = self.out_proj(x.mean(1))  # (B, H)
+        return x
+
+
+class ConvBlock(nn.Module):
+    def __init__(self, idim=80, n_chans=256, kernel_size=3, stride=1, norm='gn', dropout=0):
+        super().__init__()
+        self.conv = ConvNorm(idim, n_chans, kernel_size, stride=stride)
+        self.norm = norm
+        if self.norm == 'bn':
+            self.norm = nn.BatchNorm1d(n_chans)
+        elif self.norm == 'in':
+            self.norm = nn.InstanceNorm1d(n_chans, affine=True)
+        elif self.norm == 'gn':
+            self.norm = nn.GroupNorm(n_chans // 16, n_chans)
+        elif self.norm == 'ln':
+            self.norm = LayerNorm(n_chans // 16, n_chans)
+        elif self.norm == 'wn':
+            self.conv = torch.nn.utils.weight_norm(self.conv.conv)
+        self.dropout = nn.Dropout(dropout)
+        self.relu = nn.ReLU()
+
+    def forward(self, x):
+        """
+
+        :param x: [B, C, T]
+        :return: [B, C, T]
+        """
+        x = self.conv(x)
+        if not isinstance(self.norm, str):
+            if self.norm == 'none':
+                pass
+            elif self.norm == 'ln':
+                x = self.norm(x.transpose(1, 2)).transpose(1, 2)
+            else:
+                x = self.norm(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+        return x
+
+
+class ConvStacks(nn.Module):
+    def __init__(self, idim=80, n_layers=5, n_chans=256, odim=32, kernel_size=5, norm='gn',
+                 dropout=0, strides=None, res=True):
+        super().__init__()
+        self.conv = torch.nn.ModuleList()
+        self.kernel_size = kernel_size
+        self.res = res
+        self.in_proj = Linear(idim, n_chans)
+        if strides is None:
+            strides = [1] * n_layers
+        else:
+            assert len(strides) == n_layers
+        for idx in range(n_layers):
+            self.conv.append(ConvBlock(
+                n_chans, n_chans, kernel_size, stride=strides[idx], norm=norm, dropout=dropout))
+        self.out_proj = Linear(n_chans, odim)
+
+    def forward(self, x, return_hiddens=False):
+        """
+
+        :param x: [B, T, H]
+        :return: [B, T, H]
+        """
+        x = self.in_proj(x)
+        x = x.transpose(1, -1)  # (B, idim, Tmax)
+        hiddens = []
+        for f in self.conv:
+            x_ = f(x)
+            x = x + x_ if self.res else x_  # (B, C, Tmax)
+            hiddens.append(x)
+        x = x.transpose(1, -1)
+        x = self.out_proj(x)  # (B, Tmax, H)
+        if return_hiddens:
+            hiddens = torch.stack(hiddens, 1)  # [B, L, C, T]
+            return x, hiddens
         return x
