@@ -180,7 +180,6 @@ class FastSpeechDataset(BaseTTSDataset):
     def collater(self, samples):
         if len(samples) == 0:
             return {}
-        hparams = self.hparams
         batch = super(FastSpeechDataset, self).collater(samples)
         f0 = utils.collate_1d([s['f0'] for s in samples], 0.0)
         pitch = utils.collate_1d([s['pitch'] for s in samples]) if samples[0]['pitch'] is not None else None
