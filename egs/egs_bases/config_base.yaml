@@ -41,7 +41,6 @@ max_tokens: 31250
 max_sentences: 100000
 max_valid_tokens: -1
 max_valid_sentences: -1
-eval_max_batches: -1
 test_input_dir: ''
 resume_from_checkpoint: 0
 rename_tmux: true

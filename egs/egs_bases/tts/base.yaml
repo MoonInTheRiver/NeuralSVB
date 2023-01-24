@@ -40,22 +40,22 @@ pitch_extractor: parselmouth
 loud_norm: false
 endless_ds: true
 
-test_num: 100
+test_num: 0
 min_frames: 0
 max_frames: 1548
 frames_multiple: 1
 max_input_tokens: 1550
 audio_num_mel_bins: 80
 audio_sample_rate: 22050
-hop_size: 256  # For 22050Hz, 275 ~= 12.5 ms (0.0125 * sample_rate)
-win_size: 1024  # For 22050Hz, 1100 ~= 50 ms (If None, win_size: fft_size) (0.05 * sample_rate)
-fmin: 80  # Set this to 55 if your speaker is male! if female, 95 should help taking off noise. (To test depending on dataset. Pitch info: male~[65, 260], female~[100, 525])
-fmax: 7600  # To be increased/reduced depending on data.
-fft_size: 1024  # Extra window size is filled with 0 paddings to match this parameter
+hop_size: 128  # For 22050Hz, 275 ~= 12.5 ms (0.0125 * sample_rate)
+win_size: 512  # For 22050Hz, 1100 ~= 50 ms (If None, win_size: fft_size) (0.05 * sample_rate)
+fmin: 50  # Set this to 55 if your speaker is male! if female, 95 should help taking off noise. (To test depending on dataset. Pitch info: male~[65, 260], female~[100, 525])
+fmax: 11025  # To be increased/reduced depending on data.
+fft_size: 512  # Extra window size is filled with 0 paddings to match this parameter
 min_level_db: -100
 ref_level_db: 20
 griffin_lim_iters: 60
-num_spk: 1
+num_spk: 100
 mel_vmin: -6
 mel_vmax: 1.5
 ds_workers: 1
@@ -72,7 +72,7 @@ enc_ffn_kernel_size: 9
 dec_ffn_kernel_size: 9
 ffn_act: gelu
 ffn_padding: 'SAME'
-use_spk_id: false
+use_spk_id: true
 use_split_spk_id: false
 use_spk_embed: false
 mel_loss: l1
@@ -113,5 +113,5 @@ vocoder_denoise_c: 0.0
 profile_infer: false
 out_wav_norm: false
 save_gt: true
-save_f0: false
+save_f0: true
 gen_dir_name: ''

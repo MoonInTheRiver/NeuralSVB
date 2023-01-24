@@ -10,15 +10,14 @@ rerun_gen: false
 mel_disc_type: multi_window
 disc_norm: in
 mel_disc_hidden_size: 128
-diverse_reg: false
 
 # mel decoder
 mel_gan: true
 lambda_mel_adv: 0.1
 mel_hidden_size: 256
-dec_inp_add_noise: true
-mel_loss_no_noise: false
-z_channels: 64
+dec_inp_add_noise: false
+
+#z_channels: 64
 
 # others
 dropout: 0.05
