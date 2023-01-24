@@ -63,7 +63,7 @@ class ConformerEncoder(ConformerLayers):
     def forward(self, x):
         """
 
-        :param src_tokens: [B, T]
+        :param x: [B, T]
         :return: [B x T x C]
         """
         x = self.embed(x)  # [B, T, H]
