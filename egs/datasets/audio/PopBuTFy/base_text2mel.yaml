@@ -18,7 +18,7 @@ binarization_args:
 word_size: 1000
 
 use_spk_embed: false
-use_spk_id: true
+use_spk_id: false
 use_ref_enc: false
 use_tech: true
 num_techs: 3
