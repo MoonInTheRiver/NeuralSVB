@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from data_gen.tts.data_gen_utils import get_pitch
 from tasks.tts.fs2_utils import FastSpeechDataset
 from utils.cwt import cwt2f0
-from utils.pl_utils import data_loader
+from tasks.base_task import data_loader
 import os
 from multiprocessing.pool import Pool
 from tqdm import tqdm
