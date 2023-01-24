@@ -106,11 +106,6 @@ class TtsTask(BaseTask):
         phone_list = json.load(open(phone_list_file))
         return TokenTextEncoder(None, vocab_list=phone_list, replace_oov=',')
 
-    def build_optimizer(self, model):
-        self.optimizer = optimizer = torch.optim.AdamW(
-            model.parameters(),
-            lr=hparams['lr'])
-        return optimizer
 
     def test_start(self):
         self.saving_result_pool = Pool(8)

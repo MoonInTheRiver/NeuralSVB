@@ -4,7 +4,8 @@ from torch import nn
 from torch.nn import Parameter
 import torch.onnx.operators
 import torch.nn.functional as F
-import utils
+import utils.tts_utils
+
 
 
 class Reshape(nn.Module):
@@ -139,7 +140,7 @@ class SinusoidalPositionalEmbedding(nn.Module):
             pos = timestep.view(-1)[0] + 1 if timestep is not None else seq_len
             return self.weights[self.padding_idx + pos, :].expand(bsz, 1, -1)
 
-        positions = utils.make_positions(input, self.padding_idx) if positions is None else positions
+        positions = utils.tts_utils.make_positions(input, self.padding_idx) if positions is None else positions
         return self.weights.index_select(0, positions.view(-1)).view(bsz, seq_len, -1).detach()
 
     def max_positions(self):
@@ -769,42 +770,4 @@ class ConvBlock(nn.Module):
                 x = self.norm(x)
         x = self.relu(x)
         x = self.dropout(x)
-        return x
-
-
-class ConvStacks(nn.Module):
-    def __init__(self, idim=80, n_layers=5, n_chans=256, odim=32, kernel_size=5, norm='gn',
-                 dropout=0, strides=None, res=True):
-        super().__init__()
-        self.conv = torch.nn.ModuleList()
-        self.kernel_size = kernel_size
-        self.res = res
-        self.in_proj = Linear(idim, n_chans)
-        if strides is None:
-            strides = [1] * n_layers
-        else:
-            assert len(strides) == n_layers
-        for idx in range(n_layers):
-            self.conv.append(ConvBlock(
-                n_chans, n_chans, kernel_size, stride=strides[idx], norm=norm, dropout=dropout))
-        self.out_proj = Linear(n_chans, odim)
-
-    def forward(self, x, return_hiddens=False):
-        """
-
-        :param x: [B, T, H]
-        :return: [B, T, H]
-        """
-        x = self.in_proj(x)
-        x = x.transpose(1, -1)  # (B, idim, Tmax)
-        hiddens = []
-        for f in self.conv:
-            x_ = f(x)
-            x = x + x_ if self.res else x_  # (B, C, Tmax)
-            hiddens.append(x)
-        x = x.transpose(1, -1)
-        x = self.out_proj(x)  # (B, Tmax, H)
-        if return_hiddens:
-            hiddens = torch.stack(hiddens, 1)  # [B, L, C, T]
-            return x, hiddens
         return x
