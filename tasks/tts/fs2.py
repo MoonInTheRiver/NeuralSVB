@@ -291,7 +291,7 @@ class FastSpeech2Task(TtsTask):
         name = f'mel_{batch_idx}' if name is None else name
         vmin = hparams['mel_vmin']
         vmax = hparams['mel_vmax']
-        self.logger.experiment.add_figure(name, spec_to_figure(spec_cat[0], vmin, vmax), self.global_step)
+        self.logger.add_figure(name, spec_to_figure(spec_cat[0], vmin, vmax), self.global_step)
 
     def plot_dur(self, batch_idx, sample, model_out):
         T_txt = sample['txt_tokens'].shape[1]
@@ -299,7 +299,7 @@ class FastSpeech2Task(TtsTask):
         dur_pred = self.model.dur_predictor.out2dur(model_out['dur']).float()
         txt = self.phone_encoder.decode(sample['txt_tokens'][0].cpu().numpy())
         txt = txt.split(" ")
-        self.logger.experiment.add_figure(
+        self.logger.add_figure(
             f'dur_{batch_idx}', dur_to_figure(dur_gt, dur_pred, txt), self.global_step)
 
     def plot_pitch(self, batch_idx, sample, model_out):
@@ -308,7 +308,7 @@ class FastSpeech2Task(TtsTask):
             mel2ph = sample['mel2ph']
             f0 = self.expand_f0_ph(f0, mel2ph)
             f0_pred = self.expand_f0_ph(model_out['pitch_pred'][:, :, 0], mel2ph)
-            self.logger.experiment.add_figure(
+            self.logger.add_figure(
                 f'f0_{batch_idx}', f0_to_figure(f0[0], None, f0_pred[0]), self.global_step)
             return
         f0 = denorm_f0(f0, sample['uv'], hparams)
@@ -317,7 +317,7 @@ class FastSpeech2Task(TtsTask):
             cwt_out = model_out['cwt']
             cwt_spec = cwt_out[:, :, :10]
             cwt = torch.cat([cwt_spec, sample['cwt_spec']], -1)
-            self.logger.experiment.add_figure(f'cwt_{batch_idx}', spec_to_figure(cwt[0]), self.global_step)
+            self.logger.add_figure(f'cwt_{batch_idx}', spec_to_figure(cwt[0]), self.global_step)
             # f0
             f0_pred = cwt2f0(cwt_spec, model_out['f0_mean'], model_out['f0_std'], hparams['cwt_scales'])
             if hparams['use_uv']:
@@ -325,13 +325,13 @@ class FastSpeech2Task(TtsTask):
                 uv_pred = cwt_out[:, :, -1] > 0
                 f0_pred[uv_pred > 0] = 0
             f0_cwt = denorm_f0(sample['f0_cwt'], sample['uv'], hparams)
-            self.logger.experiment.add_figure(
+            self.logger.add_figure(
                 f'f0_{batch_idx}', f0_to_figure(f0[0], f0_cwt[0], f0_pred[0]), self.global_step)
         elif hparams['pitch_type'] == 'frame':
             # f0
             uv_pred = model_out['pitch_pred'][:, :, 1] > 0
             pitch_pred = denorm_f0(model_out['pitch_pred'][:, :, 0], uv_pred, hparams)
-            self.logger.experiment.add_figure(
+            self.logger.add_figure(
                 f'f0_{batch_idx}', f0_to_figure(f0[0], None, pitch_pred[0]), self.global_step)
 
     ############
