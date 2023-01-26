@@ -1,30 +1,15 @@
-import glob
-import importlib
-import json
-import os
 import numpy as np
-from tqdm import tqdm
 import matplotlib
-
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 import torch
-import torch.nn.functional as F
-
-from tasks.tts.fs2_adv import FastSpeech2AdvTask
-from tasks.singing.neural_svb_task import FastSingingDataset, FastSpeechDataset
-from modules.voice_conversion.svb_ppg import ParaSVBPPG, ParaPPGConstraint, ParaPPGPreExp, ParaAlignedPPG
+from tasks.singing.neural_svb_task import FastSingingDataset
 from vocoders.base_vocoder import get_vocoder_cls
-from data_gen.tts.data_gen_utils import get_pitch
-
 import utils
-from utils import audio
 from utils.hparams import hparams
-from utils.plot import spec_to_figure
-from utils.pitch_utils import norm_interp_f0, denorm_f0, f0_to_coarse
+from utils.pitch_utils import denorm_f0
 from utils.common_schedulers import RSQRTSchedule, NoneSchedule
-from modules.voice_conversion.svb_vae import SVBVAE, GlobalSVBVAE, MleSVBVAE, TechPriorMleSVBVAE, SegTechPriorMleSVBVAE
-from tasks.singing.svb_para import FastSingingF0AlignDataset, ParaPPGPretrainedTask
+from modules.voice_conversion.svb_vae import SVBVAE, GlobalSVBVAE, MleSVBVAE
+from tasks.singing.svb_para import ParaPPGPretrainedTask
 
 import os
 import json
@@ -135,17 +120,17 @@ class SVBVAETask(ParaPPGPretrainedTask):
         model.vc_asr.eval()
         #
         txt_tokens = sample['txt_tokens']  # [B, T_t]
-        spk_ids = sample['spk_ids'] if hparams['use_spk_id'] else None
+        # spk_ids = sample['spk_ids'] if hparams['use_spk_id'] else None
 
         amateur_mels = sample['mels']  # [B, T_s, 80]
         amateur_pitch = sample['pitch']
-        amateur_energy = sample['energy']
-        amateur_tech_id = torch.zeros([amateur_mels.shape[0]], dtype=torch.long, device=amateur_mels.device)
+        # amateur_energy = sample['energy']
+        # amateur_tech_id = torch.zeros([amateur_mels.shape[0]], dtype=torch.long, device=amateur_mels.device)
 
         prof_mels = sample['prof_mels']
         prof_pitch = sample['prof_pitch']
-        prof_energy = sample['prof_energy']
-        prof_tech_id = torch.ones([prof_mels.shape[0]], dtype=torch.long, device=prof_mels.device)
+        # prof_energy = sample['prof_energy']
+        # prof_tech_id = torch.ones([prof_mels.shape[0]], dtype=torch.long, device=prof_mels.device)
 
         a2p_alignment = sample['a2p_f0_alignment']
         p2a_alignment = sample['p2a_f0_alignment']
@@ -280,8 +265,8 @@ class SVBVAETask(ParaPPGPretrainedTask):
             'p2p': prof_f0s,
             'a2p': prof_f0s
         }
-        vmin = hparams['mel_vmin']
-        vmax = hparams['mel_vmax']
+        # vmin = hparams['mel_vmin']
+        # vmax = hparams['mel_vmax']
         outputs = {}
         outputs['losses'] = {}
         self.watch_asr_loss = True
@@ -394,52 +379,12 @@ class SVBVAETask(ParaPPGPretrainedTask):
             'text': text,
         }
 
-    # @staticmethod
-    # def save_result(wavs_dict, base_fn, gen_dir, str_phs=None):
-    #     for key in wavs_dict:
-    #         audio.save_wav(wavs_dict[key], f'{gen_dir}/wavs/{key}/{base_fn}.wav', hparams['audio_sample_rate'],
-    #                    norm=hparams['out_wav_norm'])
-
-
-# Pretrain dataset
-class SingingPretrainDataset(FastSpeechDataset):
-    def __getitem__(self, index):
-        sample = super(SingingPretrainDataset, self).__getitem__(index)
-        item = self._get_item(index)
-        # add spk emb
-        multi_spk_emb = torch.FloatTensor(item['multi_spk_emb'])[0]
-        sample['multi_spk_emb'] = multi_spk_emb
-        return sample
-
-    def collater(self, samples):
-        batch = super(SingingPretrainDataset, self).collater(samples)
-        batch['prof_f0'] = batch['f0']
-        batch['prof_pitch'] = batch['pitch']
-        batch['prof_uv'] = batch['uv']
-        batch['prof_energy'] = batch['energy']
-        batch['prof_mel2ph'] = batch['mel2ph']
-        batch['prof_mels'] = batch['mels']
-        batch['prof_mel_lengths'] = batch['mel_lengths']
-        # batch['f0'] = None
-        # batch['pitch'] = None #batch['pitch']
-        # batch['uv'] = None #batch['uv']
-        # batch['energy'] = None #batch['energy']
-        # batch['mel2ph'] = None #batch['mel2ph']
-        # batch['mels'] = None #batch['mels']
-        # batch['mel_lengths'] = None #batch['mel_lengths']
-        batch['a2p_f0_alignment'] = None  # utils.collate_1d([s['a2p_f0_alignment'] for s in samples])
-        batch['p2a_f0_alignment'] = None  # utils.collate_1d([s['p2a_f0_alignment'] for s in samples])
-        # add spk emb
-        batch['multi_spk_emb'] = utils.collate_2d([s['multi_spk_emb'] for s in samples])
-        return batch
-
 
 class SVBVAEBoostTask(SVBVAETask):
 
     def __init__(self):
         super().__init__()
         self.dataset_cls = MultiSpkEmbDataset
-        # self.dataset_cls = SingingPretrainDataset
 
     def on_before_optimization(self, opt_idx):
         if opt_idx == 0:
@@ -592,12 +537,6 @@ class SVBVAEBoostTask(SVBVAETask):
             self.logger.add_audio(f'gt_p_wav_{batch_idx}', gt_p_wav_out, self.global_step, sampling_rate)
 
         return outputs
-
-
-class SVBVAEGlobalTask(SVBVAEBoostTask):
-    def __init__(self):
-        super().__init__()
-        self.dataset_cls = MultiSpkEmbDataset
 
 
 class SVBVAEMleTask(SVBVAEBoostTask):
@@ -779,13 +718,6 @@ class SVBVAEMleTask(SVBVAEBoostTask):
             self.logger.add_audio(f'gt_p_wav_{batch_idx}', gt_p_wav_out, self.global_step, sampling_rate)
 
         return outputs
-
-
-class SVCVAEMlePretrainTask(SVBVAEMleTask):
-    def __init__(self):
-        super().__init__()
-        self.dataset_cls = MultiSpkEmbDataset
-        # self.dataset_cls = SingingPretrainDataset
 
 
 

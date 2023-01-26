@@ -1,25 +1,19 @@
-import glob
-import importlib
 import json
 import os
 import numpy as np
-from tqdm import tqdm
 import matplotlib.pyplot as plt
 import torch
 import torch.nn.functional as F
-from multiprocessing.pool import Pool
-from tasks.singing.svb_base import SVBPPGTask, FastSpeech2AdvTask
+from tasks.singing.svb_base import FastSpeech2AdvTask
 from tasks.singing.neural_svb_task import FastSingingDataset
 from modules.voice_conversion.svb_ppg import ParaSVBPPG, ParaPPGConstraint, ParaPPGPreExp, ParaAlignedPPG
 from modules.fastspeech.multi_window_disc import Discriminator
 from vocoders.base_vocoder import get_vocoder_cls
-from data_gen.tts.data_gen_utils import get_pitch
 
 import utils
 from utils import audio
 from utils.hparams import hparams
-from utils.plot import spec_to_figure
-from utils.pitch_utils import norm_interp_f0, denorm_f0, f0_to_coarse
+from utils.pitch_utils import denorm_f0
 
 
 class FastSingingF0AlignDataset(FastSingingDataset):
@@ -485,8 +479,8 @@ class ParaPPGPretrainedTask(SVBParaTask):
             'a2p': prof_f0s,
             'p2a': amateur_f0s,
         }
-        vmin = hparams['mel_vmin']
-        vmax = hparams['mel_vmax']
+        # vmin = hparams['mel_vmin']
+        # vmax = hparams['mel_vmax']
         outputs = {}
         outputs['losses'] = {}
         self.watch_asr_loss = True
@@ -644,12 +638,12 @@ class AmtSpkTask(ParaPPGPretrainedTask):
 
         amateur_mels = sample['mels']  # [B, T_s, 80]
         amateur_pitch = sample['pitch']
-        amateur_energy = sample['energy']
+        # amateur_energy = sample['energy']
         amateur_tech_id = torch.zeros([amateur_mels.shape[0]], dtype=torch.long, device=amateur_mels.device)
 
         prof_mels = sample['prof_mels']
         prof_pitch = sample['prof_pitch']
-        prof_energy = sample['prof_energy']
+        # prof_energy = sample['prof_energy']
         prof_tech_id = torch.ones([prof_mels.shape[0]], dtype=torch.long, device=prof_mels.device)
 
         a2p_alignment = sample['a2p_f0_alignment']
