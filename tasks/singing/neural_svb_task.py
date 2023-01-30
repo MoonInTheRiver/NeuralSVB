@@ -10,7 +10,6 @@ import utils
 class FastSingingDataset(FastSpeechDataset):
     def __getitem__(self, index):
         sample = super(FastSingingDataset, self).__getitem__(index)
-        del sample['txt_token']
         item = self._get_item(index)
         hparams = self.hparams
         max_frames = hparams['max_frames']
