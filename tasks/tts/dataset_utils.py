@@ -88,7 +88,7 @@ class BaseTTSDataset(BaseDataset):
         item_names = [s['item_name'] for s in samples]
         text = [s['text'] for s in samples]
         txt_tokens = utils.collate_1d([s['txt_token'] for s in samples], 0) if samples[-1].get('txt_token', None) is not None else None
-        mels = utils.collate_2d([s['mel'] for s in samples], 0.0) if samples[-1].get('txt_token', None) is not None else None
+        mels = utils.collate_2d([s['mel'] for s in samples], 0.0)
         txt_lengths = torch.LongTensor([s['txt_token'].numel() for s in samples]) if samples[-1].get('txt_token', None) is not None else None
         mel_lengths = torch.LongTensor([s['mel'].shape[0] for s in samples])
 
