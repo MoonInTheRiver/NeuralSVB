@@ -121,8 +121,6 @@ class SVBVAETask(ParaPPGPretrainedTask):
         #
         # txt_tokens = sample['txt_tokens']  # [B, T_t]
         # spk_ids = sample['spk_ids'] if hparams['use_spk_id'] else None
-        import pdb
-        pdb.set_trace()
         amateur_mels = sample['mels']  # [B, T_s, 80]
         amateur_pitch = sample['pitch']
         # amateur_energy = sample['energy']
