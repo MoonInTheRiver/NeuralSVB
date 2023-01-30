@@ -1,0 +1,3 @@
+base_config:
+  - ../tts/fs2.yaml
+  - ./base.yaml
