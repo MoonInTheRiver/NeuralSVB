@@ -1,7 +1,7 @@
 base_config:
   - ./para_bin.yaml
 
-binary_data_dir: 'data/binary/tmp'
+binary_data_dir: 'data/binary/PopBuTFyENSpkEM'
 binarizer_cls: data_gen.singing.binarize_para.SaveSpkEmb
 spk_emb_data_dir: 'data/processed/PopBuTFy/spk_emb'
 
