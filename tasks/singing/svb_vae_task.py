@@ -21,14 +21,14 @@ class MultiSpkEmbDataset(FastSingingDataset):
         item = self._get_item(index)
         a2p_f0_alignment = torch.LongTensor(item['a2p_f0_alignment'])[:sample['prof_pitch'].shape[0]].clip(
             max=sample['pitch'].shape[0] - 1)  # 最大值不超过amateur的长度 不然索引炸了.
-        p2a_f0_alignment = torch.LongTensor(item['p2a_f0_alignment'])[:sample['pitch'].shape[0]].clip(
-            max=sample['prof_pitch'].shape[0] - 1)  # 最大值不超过prof的长度 不然索引炸了.
+        # p2a_f0_alignment = torch.LongTensor(item['p2a_f0_alignment'])[:sample['pitch'].shape[0]].clip(
+        #     max=sample['prof_pitch'].shape[0] - 1)  # 最大值不超过prof的长度 不然索引炸了.
         assert a2p_f0_alignment.shape == sample['prof_pitch'].shape, (
         'a2p F0 alignment with unmatched shape: ', a2p_f0_alignment.shape, sample['prof_pitch'].shape)
-        assert p2a_f0_alignment.shape == sample['pitch'].shape, (
-        'p2a F0 alignment with unmatched shape: ', p2a_f0_alignment.shape, sample['pitch'].shape)
+        # assert p2a_f0_alignment.shape == sample['pitch'].shape, (
+        # 'p2a F0 alignment with unmatched shape: ', p2a_f0_alignment.shape, sample['pitch'].shape)
         sample['a2p_f0_alignment'] = a2p_f0_alignment
-        sample['p2a_f0_alignment'] = p2a_f0_alignment
+        # sample['p2a_f0_alignment'] = p2a_f0_alignment
         # add spk emb
         multi_spk_emb = torch.FloatTensor(item['multi_spk_emb'])
         sample['multi_spk_emb'] = multi_spk_emb
@@ -37,7 +37,7 @@ class MultiSpkEmbDataset(FastSingingDataset):
     def collater(self, samples):
         batch = super(MultiSpkEmbDataset, self).collater(samples)
         batch['a2p_f0_alignment'] = utils.collate_1d([s['a2p_f0_alignment'] for s in samples])
-        batch['p2a_f0_alignment'] = utils.collate_1d([s['p2a_f0_alignment'] for s in samples])
+        # batch['p2a_f0_alignment'] = utils.collate_1d([s['p2a_f0_alignment'] for s in samples])
         # add spk emb
         batch['multi_spk_emb'] = utils.collate_2d([s['multi_spk_emb'] for s in samples])
         return batch
