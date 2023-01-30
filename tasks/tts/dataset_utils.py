@@ -63,7 +63,7 @@ class BaseTTSDataset(BaseDataset):
         spec = torch.Tensor(item['mel'])[:max_frames]
         max_frames = spec.shape[0] // hparams['frames_multiple'] * hparams['frames_multiple']
         spec = spec[:max_frames]
-        phone = torch.LongTensor(item['phone'][:hparams['max_input_tokens']])
+        phone = torch.LongTensor(item['phone'][:hparams['max_input_tokens']]) if 'phone' in item.keys() else None
         sample = {
             "id": index,
             "item_name": item['item_name'],
@@ -85,8 +85,8 @@ class BaseTTSDataset(BaseDataset):
         id = torch.LongTensor([s['id'] for s in samples])
         item_names = [s['item_name'] for s in samples]
         text = [s['text'] for s in samples]
-        txt_tokens = utils.collate_1d([s['txt_token'] for s in samples], 0)
-        mels = utils.collate_2d([s['mel'] for s in samples], 0.0)
+        txt_tokens = utils.collate_1d([s['txt_token'] for s in samples], 0) if samples[-1].get('txt_token', None) is not None else None
+        mels = utils.collate_2d([s['mel'] for s in samples], 0.0) if samples[-1].get('txt_token', None) is not None else None
         txt_lengths = torch.LongTensor([s['txt_token'].numel() for s in samples])
         mel_lengths = torch.LongTensor([s['mel'].shape[0] for s in samples])
 
@@ -95,11 +95,12 @@ class BaseTTSDataset(BaseDataset):
             'item_name': item_names,
             'nsamples': len(samples),
             'text': text,
-            'txt_tokens': txt_tokens,
-            'txt_lengths': txt_lengths,
             'mels': mels,
             'mel_lengths': mel_lengths,
         }
+        if txt_tokens is not None:
+            batch['txt_tokens'] = txt_tokens
+            batch['txt_lengths'] = txt_lengths
 
         if hparams['use_spk_embed']:
             spk_embed = torch.stack([s['spk_embed'] for s in samples])
