@@ -119,7 +119,7 @@ class SVBVAETask(ParaPPGPretrainedTask):
                   disable_map=False):
         model.vc_asr.eval()
         #
-        txt_tokens = sample['txt_tokens']  # [B, T_t]
+        # txt_tokens = sample['txt_tokens']  # [B, T_t]
         # spk_ids = sample['spk_ids'] if hparams['use_spk_id'] else None
 
         amateur_mels = sample['mels']  # [B, T_s, 80]
@@ -133,7 +133,7 @@ class SVBVAETask(ParaPPGPretrainedTask):
         # prof_tech_id = torch.ones([prof_mels.shape[0]], dtype=torch.long, device=prof_mels.device)
 
         a2p_alignment = sample['a2p_f0_alignment']
-        p2a_alignment = sample['p2a_f0_alignment']
+        # p2a_alignment = sample['p2a_f0_alignment']
 
         if infer:
             rand_spkemb_idx = 0
@@ -143,7 +143,7 @@ class SVBVAETask(ParaPPGPretrainedTask):
         output = self.model(amateur_mel=amateur_mels, prof_mel=prof_mels,
                             amateur_pitch=amateur_pitch, prof_pitch=prof_pitch,
                             amateur_spk_id=spk_ids, prof_spk_id=spk_ids,  # both use amateur spk id
-                            a2p_alignment=a2p_alignment, p2a_alignment=p2a_alignment,
+                            a2p_alignment=a2p_alignment, p2a_alignment=None,
                             infer=False, concurrent_ways=concurrent_ways,
                             disable_map=disable_map)  # 这里infer选了false. a2a, p2p都不是真正的infer.
 
@@ -157,7 +157,7 @@ class SVBVAETask(ParaPPGPretrainedTask):
             else:
                 self.add_mel_loss(output[way]['mel_out'], mel_g, losses, postfix=way)
 
-        self.add_asr_losses(amateur_mels, prof_mels, txt_tokens, losses, a2p_alignment, p2a_alignment)
+        # self.add_asr_losses(amateur_mels, prof_mels, txt_tokens, losses, a2p_alignment, p2a_alignment)
         if not return_output:
             return losses
         else:
