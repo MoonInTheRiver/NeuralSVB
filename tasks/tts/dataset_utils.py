@@ -137,7 +137,7 @@ class FastSpeechDataset(BaseTTSDataset):
         max_frames = hparams['max_frames']
         spec = sample['mel'][:max_frames]
         max_frames = spec.shape[0] // hparams['frames_multiple'] * hparams['frames_multiple']
-        phone = sample['txt_token']
+        phone = sample.get('txt_token')
         sample['energy'] = (spec.exp() ** 2).sum(-1).sqrt()
         sample['mel2ph'] = mel2ph = torch.LongTensor(item['mel2ph'])[:max_frames] if 'mel2ph' in item else None
         if hparams['use_pitch_embed']:
@@ -160,7 +160,7 @@ class FastSpeechDataset(BaseTTSDataset):
                 f0_mean = item.get('f0_mean', item.get('cwt_mean'))
                 f0_std = item.get('f0_std', item.get('cwt_std'))
                 sample.update({"cwt_spec": cwt_spec, "f0_mean": f0_mean, "f0_std": f0_std})
-            elif self.pitch_type == 'ph':
+            elif self.pitch_type == 'ph' and phone is not None:
                 if "f0_ph" in item:
                     f0 = torch.FloatTensor(item['f0_ph'])
                 else:
