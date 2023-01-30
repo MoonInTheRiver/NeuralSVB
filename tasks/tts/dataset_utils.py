@@ -68,10 +68,12 @@ class BaseTTSDataset(BaseDataset):
             "id": index,
             "item_name": item['item_name'],
             "text": item.get('txt'),
-            "txt_token": phone,
             "mel": spec,
             "mel_nonpadding": spec.abs().sum(-1) > 0,
         }
+        if phone is not None:
+            sample['txt_tokens'] = phone
+
         if hparams['use_spk_embed']:
             sample["spk_embed"] = torch.Tensor(item['spk_embed'])
         if hparams['use_spk_id']:
