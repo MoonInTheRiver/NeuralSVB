@@ -67,7 +67,7 @@ class BaseTTSDataset(BaseDataset):
         sample = {
             "id": index,
             "item_name": item['item_name'],
-            "text": item['txt'],
+            "text": item.get('txt'),
             "txt_token": phone,
             "mel": spec,
             "mel_nonpadding": spec.abs().sum(-1) > 0,
