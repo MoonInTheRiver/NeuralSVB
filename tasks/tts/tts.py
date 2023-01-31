@@ -98,8 +98,7 @@ class TtsTask(BaseTask):
                                            collate_fn=dataset.collater,
                                            batch_sampler=batches,
                                            num_workers=num_workers,
-                                           pin_memory=False,
-                                           drop_last=True)
+                                           pin_memory=False)
 
     def build_phone_encoder(self, data_dir):
         phone_list_file = os.path.join(data_dir, 'phone_set.json')
