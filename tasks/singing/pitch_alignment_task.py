@@ -138,5 +138,3 @@ if __name__ == '__main__':
     pitch_alignmentor.multi_processor(pitch_alignmentor.train_ds)
     pitch_alignmentor.multi_processor(pitch_alignmentor.test_ds)
     print('Process done!')
-
-# python tasks/singing/pitch_alignment_task.py --config egs/datasets/audio/PopBuTFy/b/vae_global.yaml
