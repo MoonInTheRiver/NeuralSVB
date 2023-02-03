@@ -1,3 +1,5 @@
+import shutil
+
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -547,7 +549,8 @@ class SVBVAEMleTask(SVBVAEBoostTask):
         data_dir = hparams['binary_data_dir']
         phone_list_file = os.path.join(data_dir, 'phone_set.json')
         phone_list = json.load(open(phone_list_file))
-        self.model = GlobalSVBVAE(len(phone_list) + 10)
+        # ph_dict_size = hparams['ph_dict_size']
+        # self.model = MleSVBVAE(len(ph_dict_size) + 10)
         self.model = MleSVBVAE(len(phone_list) + 10)
 
     def build_model(self):

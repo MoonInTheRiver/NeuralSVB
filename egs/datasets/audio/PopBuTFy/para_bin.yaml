@@ -5,12 +5,12 @@ base_config:
 binarizer_cls: data_gen.singing.binarize_para.PopBuTFyENSpkEMBinarizer
 tech_prefix: 'prof_'
 
-binary_data_dir: 'data/binary/PopBuTFyENSpkEM'
+binary_data_dir: 'data/binary/PopBuTFyENSpkEM_new'
 binarization_args:
   reset_phone_dict: false
   reset_word_dict: false
   with_wav: false
 max_mel_tech_gap: 800
 
-spk_emb_data_dir: 'data/processed/PopBuTFy/spk_emb'
+spk_emb_data_dir: 'data/processed/PopBuTFy_new/spk_emb'
 spk_emb_num: 4
