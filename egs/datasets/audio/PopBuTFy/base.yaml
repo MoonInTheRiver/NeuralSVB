@@ -1,5 +1,5 @@
 raw_data_dir: 'data/raw/PopBuTFy'
-processed_data_dir: 'data/processed/PopBuTFy'
+processed_data_dir: 'data/processed/PopBuTFy_new'
 binary_data_dir: 'data/binary/PopBuTFy'
 num_spk: 100
 datasets: [
