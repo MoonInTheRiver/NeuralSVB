@@ -21,6 +21,10 @@ class TMPFVAE(FVAE):
         if not infer:
             z_q, m_q, logs_q, x_mask_sqz = self.encoder(x, x_mask, g_sqz)
             x_recon = self.decoder(z_q, x_mask, g)
+            if torch.any(m_q.isnan()) or torch.any(logs_q.isnan()):
+                print('m_q:', m_q)
+                print('logs_q:', logs_q)
+
             q_dist = dist.Normal(m_q, logs_q.exp())
             if self.use_prior_glow:
                 logqx = q_dist.log_prob(z_q)

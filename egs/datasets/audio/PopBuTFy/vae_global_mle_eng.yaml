@@ -10,8 +10,8 @@ use_energy: false
 
 # origin configs
 #lambda_mel_adv: 0.01  #
-max_tokens: 41000
-max_frames: 5100
+max_tokens: 40000
+max_frames: 5000
 
 # vae parameters
 concurrent_ways: ''
