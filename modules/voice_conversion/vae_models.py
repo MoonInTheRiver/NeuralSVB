@@ -21,9 +21,12 @@ class TMPFVAE(FVAE):
         if not infer:
             z_q, m_q, logs_q, x_mask_sqz = self.encoder(x, x_mask, g_sqz)
             x_recon = self.decoder(z_q, x_mask, g)
-            if torch.any(m_q.isnan()) or torch.any(logs_q.isnan()):
-                print('m_q:', m_q)
-                print('logs_q:', logs_q)
+            from torch.distributions import constraints
+            if not constraints.positive.check(logs_q.exp()).all():
+                invalid_index = (logs_q.exp() < 0).nonzeros(as_tuple=True)[0]
+                print('exp index:', invalid_index)
+                print('logs_q:', logs_q[invalid_index])
+                print('logs_q_exp:', logs_q.exp()[invalid_index])
 
             q_dist = dist.Normal(m_q, logs_q.exp())
             if self.use_prior_glow:
