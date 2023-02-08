@@ -691,7 +691,7 @@ class SVBVAEMleTask(SVBVAEBoostTask):
         if self.global_step <= hparams['phase_1_steps']:
             concurrent_ways = ['p2p']
         elif hparams['phase_1_steps'] < self.global_step <= hparams['phase_2_steps']:
-            concurrent_ways = ['a2a', 'p2p', 'a2p']
+            concurrent_ways = ['a2a', 'p2p']
         elif hparams['phase_2_steps'] < self.global_step:
             concurrent_ways = ['a2a', 'p2p', 'a2p']
 
