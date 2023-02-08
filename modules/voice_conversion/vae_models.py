@@ -27,7 +27,7 @@ class TMPFVAE(FVAE):
                 print('exp index:', invalid_index)
                 print('logs_q:', logs_q[invalid_index])
                 print('logs_q_exp:', logs_q.exp()[invalid_index])
-
+                logs_q[invalid_index] = 0.
             q_dist = dist.Normal(m_q, logs_q.exp())
             if self.use_prior_glow:
                 logqx = q_dist.log_prob(z_q)
