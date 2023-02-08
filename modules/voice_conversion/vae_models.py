@@ -23,7 +23,7 @@ class TMPFVAE(FVAE):
             x_recon = self.decoder(z_q, x_mask, g)
             from torch.distributions import constraints
             if not constraints.positive.check(logs_q.exp()).all():
-                invalid_index = (logs_q.exp() <= 0).nonzero(as_tuple=True)[0]
+                invalid_index = (logs_q.exp() <= 0).nonzero(as_tuple=True)
                 print('exp index:', invalid_index)
                 print('logs_q:', logs_q[invalid_index])
                 print('logs_q_exp:', logs_q.exp()[invalid_index])
