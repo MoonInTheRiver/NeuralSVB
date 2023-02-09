@@ -284,29 +284,13 @@ class MleSVBVAE(GlobalSVBVAE):
             # align  miu and sigma to the length of prof mel
             a2p_alignment = a2p_alignment[:, :, None].repeat(1, 1, self.hidden_size)  # [B, S, H]
 
-            if torch.isinf(amatuer_z_q).any() or torch.isnan(amatuer_z_q).any():
-                invalid_index = torch.isinf(amatuer_z_q).nonzero(as_tuple=True)
-                print("index ", invalid_index)
-                print("value ", amatuer_z_q[invalid_index])
-                invalid_index = torch.isnan(amatuer_z_q).nonzero(as_tuple=True)
-                print("index ", invalid_index)
-                print("value ", amatuer_z_q[invalid_index])
-
             if disable_map:
                 print('here disable map!!!')
                 mapped_amatuer_z_q = amatuer_z_q
             else:
                 mapped_amatuer_z_q = self.z_mapping_function(amatuer_z_q, amateur_conds['h_style'].transpose(1,2))  # amateur_z -> prof_z'
 
-            prof_dist = dist.Normal(prof_m_q, prof_logs_q.exp())
-
-            if torch.isinf(mapped_amatuer_z_q).any() or torch.isnan(mapped_amatuer_z_q).any():
-                invalid_index = torch.isinf(mapped_amatuer_z_q).nonzero(as_tuple=True)
-                print("index ", invalid_index)
-                print("value ", mapped_amatuer_z_q[invalid_index])
-                invalid_index = torch.isnan(mapped_amatuer_z_q).nonzero(as_tuple=True)
-                print("index ", invalid_index)
-                print("value ", mapped_amatuer_z_q[invalid_index])
+            prof_dist = dist.Normal(prof_m_q, prof_logs_q.exp() + 1e-15)
 
             a2p_out['mle'] = - prof_dist.log_prob(mapped_amatuer_z_q).sum() / mapped_amatuer_z_q.shape[0] / mapped_amatuer_z_q.shape[1]  # [B, H, 1] 除以B, 除以H.
 
