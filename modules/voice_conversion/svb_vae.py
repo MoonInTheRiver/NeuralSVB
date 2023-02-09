@@ -284,6 +284,14 @@ class MleSVBVAE(GlobalSVBVAE):
             # align  miu and sigma to the length of prof mel
             a2p_alignment = a2p_alignment[:, :, None].repeat(1, 1, self.hidden_size)  # [B, S, H]
 
+            if torch.isinf(amatuer_z_q).any() or torch.isnan(amatuer_z_q).any():
+                invalid_index = torch.isinf(amatuer_z_q).nonzero(as_tuple=True)
+                print("index ", invalid_index)
+                print("value ", amatuer_z_q[invalid_index])
+                invalid_index = torch.isnan(amatuer_z_q).nonzero(as_tuple=True)
+                print("index ", invalid_index)
+                print("value ", amatuer_z_q[invalid_index])
+
             if disable_map:
                 print('here disable map!!!')
                 mapped_amatuer_z_q = amatuer_z_q
