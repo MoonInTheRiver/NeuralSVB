@@ -1,3 +1,5 @@
+import torch
+
 from modules.commons.common_layers import *
 from modules.fastspeech.fs2 import FS_DECODERS
 from modules.voice_conversion.vc_modules import VCASR
@@ -289,6 +291,14 @@ class MleSVBVAE(GlobalSVBVAE):
                 mapped_amatuer_z_q = self.z_mapping_function(amatuer_z_q, amateur_conds['h_style'].transpose(1,2))  # amateur_z -> prof_z'
 
             prof_dist = dist.Normal(prof_m_q, prof_logs_q.exp())
+
+            if torch.isinf(mapped_amatuer_z_q).any() or torch.isnan(mapped_amatuer_z_q).any():
+                invalid_index = torch.isinf(mapped_amatuer_z_q).nonzero(as_tuple=True)
+                print("index ", invalid_index)
+                print("value ", mapped_amatuer_z_q[invalid_index])
+                invalid_index = torch.isnan(mapped_amatuer_z_q).nonzero(as_tuple=True)
+                print("index ", invalid_index)
+                print("value ", mapped_amatuer_z_q[invalid_index])
 
             a2p_out['mle'] = - prof_dist.log_prob(mapped_amatuer_z_q).sum() / mapped_amatuer_z_q.shape[0] / mapped_amatuer_z_q.shape[1]  # [B, H, 1] 除以B, 除以H.
 
