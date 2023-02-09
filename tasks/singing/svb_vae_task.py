@@ -667,8 +667,8 @@ class SVBVAEMleTask(SVBVAEBoostTask):
                 if torch.any(torch.isnan(log_outputs[f'{way}_kl'])) or torch.any(torch.isinf(log_outputs[f'{way}_kl'])):
                     log_outputs[f'{way}_kl'] = log_outputs[f'{way}_kl'].detach()
 
-            if f'{way}_mle' in log_outputs or torch.any(torch.isinf(log_outputs[f'{way}_mle'])):
-                if torch.any(torch.isnan(log_outputs[f'{way}_mle'])):
+            if f'{way}_mle' in log_outputs:
+                if torch.any(torch.isnan(log_outputs[f'{way}_mle'])) or torch.any(torch.isinf(log_outputs[f'{way}_mle'])):
                     log_outputs[f'{way}_mle'] = log_outputs[f'{way}_mle'].detach()
 
         total_loss = sum([loss_weights.get(k, 1) * v for k, v in log_outputs.items()])
