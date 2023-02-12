@@ -80,13 +80,13 @@ dur_enc_hidden_stride_kernel:
 mel_loss: l1:0.5|ssim:0.5 # l1|l2|gdl|ssim or l1:0.5|ssim:0.5
 
 # loss lambda
-lambda_f0: 1.0
+lambda_f0: 0.0
 lambda_uv: 1.0
-lambda_energy: 0.1
-lambda_ph_dur: 0.1
+lambda_energy: 0.0
+lambda_ph_dur: 0.0
 lambda_sent_dur: 1.0
 lambda_word_dur: 1.0
-predictor_grad: 0.1
+predictor_grad: 0.0
 
 # train and eval
 pretrain_fs_ckpt: ''
@@ -95,7 +95,7 @@ max_tokens: 32000
 max_sentences: 100000
 max_valid_sentences: 1
 max_updates: 120000
-use_gt_dur: false
-use_gt_f0: false
+use_gt_dur: true
+use_gt_f0: true
 ds_workers: 2
 lr: 1.0

@@ -156,8 +156,7 @@ class Trainer:
     # valid and test
     ####################
     def run_evaluation(self, test=False):
-        eval_results = self.evaluate(self.task, test, tqdm_desc='Valid' if not test else 'test',
-                                     max_batches=hparams['eval_max_batches'])
+        eval_results = self.evaluate(self.task, test, tqdm_desc='Valid' if not test else 'test')
         if eval_results is not None and 'tb_log' in eval_results:
             tb_log_output = eval_results['tb_log']
             self.log_metrics_to_tb(tb_log_output)

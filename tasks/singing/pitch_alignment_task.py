@@ -98,13 +98,13 @@ class MyMultiprocessor:
         set_hparams()
         self.processed_path = os.path.join(hparams['processed_data_dir'], f'{prefix}_alignments_by_{choosed_func}')
         self.train_ds = FastSingingDataset('train')  # for training set.
-        # self.train_ds = FastSingingDataset('test')   # for testing set.
+        self.test_ds = FastSingingDataset('test')   # for testing set.
         os.makedirs(self.processed_path, exist_ok=True)
 
-    def multi_processor(self):
+    def multi_processor(self, ds):
         saving_result_pool = Pool(20)
         saving_results_futures = []
-        for sample in self.train_ds:
+        for sample in ds:
             saving_results_futures.append([
                 saving_result_pool.apply_async(job, args=(sample, self.processed_path, align_funcs[choosed_func], False, True))])
         saving_result_pool.close()
@@ -135,7 +135,6 @@ class MyMultiprocessor:
 if __name__ == '__main__':
     set_hparams()
     pitch_alignmentor = MyMultiprocessor()
-    pitch_alignmentor.multi_processor()
+    pitch_alignmentor.multi_processor(pitch_alignmentor.train_ds)
+    pitch_alignmentor.multi_processor(pitch_alignmentor.test_ds)
     print('Process done!')
-
-# python tasks/singing/pitch_alignment_task.py --config egs/datasets/audio/PopBuTFy/b/vae_global.yaml

@@ -26,5 +26,3 @@ num_techs: 3
 normalize_pitch: false
 
 # vocoder parameters
-vocoder: pwg
-vocoder_ckpt: ''

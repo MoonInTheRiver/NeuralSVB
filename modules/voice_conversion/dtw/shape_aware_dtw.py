@@ -127,17 +127,17 @@ def spec_to_figure(spec, vmin=None, vmax=None, name='', dir='tmp'):
 
 def f0_to_figure(f0_src, f0_aligned=None, f0_prof=None, name='f0.png', dir='tmp'):
     fig = plt.figure(figsize=(12, 8))
-    f0_src = f0_src.cpu().numpy()
+    f0_src = f0_src #.cpu().numpy()
     f0_src[f0_src == 0] = np.nan
     plt.plot(f0_src, color='r', label='src')
     if f0_aligned is not None:
-        f0_aligned = f0_aligned.cpu().numpy()
+        f0_aligned = f0_aligned # .cpu().numpy()
         f0_aligned[f0_aligned == 0] = np.nan
         plt.plot(f0_aligned, color='b', label='f0_aligned')
     if f0_prof is not None:
-        f0_pred = f0_prof.cpu().numpy()
+        f0_prof = f0_prof # .cpu().numpy()
         f0_prof[f0_prof == 0] = np.nan
-        plt.plot(f0_pred, color='green', label='profession')
+        plt.plot(f0_prof, color='green', label='profession')
     plt.legend()
     os.makedirs(dir, exist_ok=True)
     plt.savefig(os.path.join(dir, name))

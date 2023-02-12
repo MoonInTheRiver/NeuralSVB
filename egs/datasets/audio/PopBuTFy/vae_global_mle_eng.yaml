@@ -1,20 +1,19 @@
 base_config:
   - egs/egs_bases/vc/vc_ppg.yaml
-  - base_text2mel.yaml
+  - ./base_text2mel.yaml
+binary_data_dir: 'data/binary/PopBuTFyENSpkEM_new'
 
-binary_data_dir: 'data/binary/popbutfy_para_unseen_multispkemb'
-#binary_data_dir: 'data/binary/popcs_songs'
-
-task_cls: tasks.singing.svc_vae_task.SVCVAEGlobalTask
+task_cls: tasks.singing.svb_vae_task.SVBVAEMleTask
 use_energy: false
 
 # origin configs
 #lambda_mel_adv: 0.01  #
-max_tokens: 20000
+max_tokens: 40000
 max_frames: 5000
 
 # vae parameters
 concurrent_ways: ''
+lambda_mle: 1.
 lambda_kl: 0.001
 phase_1_steps: -1
 phase_2_steps: 100000
@@ -47,5 +46,4 @@ vocoder: hifigan
 vocoder_ckpt: 'checkpoints/1012_hifigan_all_songs_nsf'
 
 # asr parameters
-pretrain_asr_ckpt: 'checkpoints/1009_pretrain_asr'
-
+pretrain_asr_ckpt: 'checkpoints/1009_pretrain_asr_english'

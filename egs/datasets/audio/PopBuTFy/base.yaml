@@ -1,0 +1,50 @@
+raw_data_dir: 'data/raw/PopBuTFy'
+processed_data_dir: 'data/processed/PopBuTFy_new'
+binary_data_dir: 'data/binary/PopBuTFy'
+num_spk: 100
+datasets: [
+    'Female1#',
+    'Female10#',
+    'Female11#',
+    'Female12#',
+    'Female13#',
+    'Female14#',
+    'Female15#',
+    'Female16#',
+    'Female17#',
+    'Female18#',
+    'Female2#',
+    'Female3#',
+    'Female4#',
+    'Female5#',
+    'Female6#',
+    'Female7#',
+    'Female8#',
+    'Female9#',
+    'Male1#',
+    'Male2#',
+    'Male3#',
+    'Male4#',
+    'Male5#',
+    'Male6#'
+]
+
+test_prefixes: [
+  "Male6#singing#",
+  'Female14#singing#',
+]
+
+binarization_args:
+  with_spk_id: true
+  with_spk_embed: false
+  with_wav: false
+  with_linear: false
+  with_f0cwt: false
+word_size: 1000
+
+use_spk_embed: false
+use_ref_enc: false
+use_spk_id: false
+normalize_pitch: false
+
+vocoder_ckpt: 'checkpoints/'

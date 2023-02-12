@@ -2,4 +2,6 @@
 *.pyc
 __pycache__/
 *.sh
+data/*
+checkpoints/*
 local_tools/dtw
