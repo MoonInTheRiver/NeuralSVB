@@ -2,8 +2,6 @@ base_config:
   - egs/egs_bases/vc/vc_ppg.yaml
   - ./base_text2mel.yaml
 binary_data_dir: 'data/binary/PopBuTFyENSpkEM_new'
-#binary_data_dir: 'data/binary/molar_long_english_new'
-#binary_data_dir: 'data/binary/xiaoma_songs'
 
 task_cls: tasks.singing.svb_vae_task.SVBVAEMleTask
 use_energy: false
