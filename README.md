@@ -14,7 +14,7 @@ This repository is the official PyTorch implementation of our ACL-2022 [paper](h
 
 ## 0. Dataset (PopBuTFy) Acquirement
 ### Audio samples
-- See in [apply_form](resources/apply_form.md).
+- You can download the dataset from [here](https://drive.google.com/file/d/1IKFp7y1WeYGrwXgJ0HC3rdPj54WoqIsU/view?usp=sharing). Please send us an email for registration (See in [apply_form](resources/apply_form.md)).
 - Dataset [preview](https://github.com/MoonInTheRiver/NeuralSVB/releases/download/pre-release/PopBuTFy-preview.zip).
 
 ### Text labels
