@@ -87,8 +87,8 @@ CUDA_VISIBLE_DEVICES=0,1 python tasks/run.py --config egs/datasets/audio/PopBuTF
 ```
 Inference results will be saved in `./checkpoints/EXP_NAME/generated_` by default.
 
-We will also provide:
- - the pre-trained model of NSVB (WIP);
+We provided:
+ - the [pre-trained model](https://github.com/MoonInTheRiver/NeuralSVB/releases/download/pre-release/1030_vae_mle.zip) of NSVB (en version);
 
 Remember to put the pre-trained models in `checkpoints` directory.
 
