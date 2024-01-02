@@ -24,7 +24,7 @@ NeuralSVB does not need text as input, but the ASR model to extract PPG needs te
 ## 1. Preparation
 
 ### Environment Preparation
-WIP.
+Most of the required packages are in https://github.com/NATSpeech/NATSpeech/blob/main/requirements.txt 
 
 ### Data Preparation
 
